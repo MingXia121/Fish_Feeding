@@ -18,6 +18,9 @@ const api = (a: string, postData = {}, v = '1.0') => {
   return TYSdk.apiRequest(a, postData, v) as any;
 };
 
+
+import { commonApi } from '@tuya/tuya-panel-api';
+
 /**
  * @language en-US
  * @description Get the device list in the family.
@@ -363,3 +366,39 @@ export const getVoiceScenes = (): Promise<IVoiceSceneItem[]> =>
  */
 export const saveVoiceScene = (scene: ISaveVoiceScene) =>
   api('tuya.ai.auaora.scene.save', { scene }, '1.0');
+
+
+
+/**
+ * 获得设备操作记录
+ */
+export const getOperationRecord = () => {
+  // return commonApi.statApi
+  //   .getLogUserAction({
+  //     devId: TYSdk.devInfo.devId,
+  //     dpIds: '20', // 多个DP
+  //     offset: 1,
+  //     limit: 3,
+  //     sortType: 'ASC',
+  //   })
+  //   .then(response => {
+  //     console.log(response);
+  //     return response;
+  //   })
+  //   .catch();
+  return TYSdk.devInfo.devId
+}
+
+/**
+ * test
+ */
+export const testApi = () => {
+  return TYSdk.device.getDeviceInfo()
+  .then((data) => {
+    console.log('data :>> ', data);
+    return data;
+  })
+  .catch(error => {
+    console.log('error :>> ', error);
+  });
+}

@@ -36,6 +36,9 @@ import MoreFunction from './pages/moreFunction';
 import SetNickname from './pages/moreFunction/setNickname';
 import Shortcut from './pages/moreFunction/shortcut';
 
+import RegularTime from './pages/RegularTime';
+import FeedRecord from './pages/FeedRecord';
+
 console.disableYellowBox = true;
 
 type Props = ReduxState & { dispatch: Dispatch };
@@ -56,6 +59,15 @@ const getRouteConfig = (route: DeprecatedNavigatorRoute) => {
       component = <Home />;
       routeProps.hideTopbar = false;
       break;
+    // 定时页面
+    case 'RegularTime':
+      component = <RegularTime />;
+      break;
+    case 'FeedRecord':
+      component = <FeedRecord />;
+      break;
+
+
     // 中控语音技能说明
     case 'voiceControlSkill':
       component = <VoiceControlSkill />;

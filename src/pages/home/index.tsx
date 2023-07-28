@@ -36,72 +36,72 @@ const Home: FC = () => {
       {
         title: "定时",
         icon: Res.time,
-        onPress: () => jumpToPage('regularTime'),
+        onPress: () => jumpToPage('RegularTime'),
         hide: false,
       },
       // 喂食记录
       {
         title: "喂食记录",
         icon: Res.calendar,
-        onPress: () => jumpToPage('sceneList'),
+        onPress: () => jumpToPage('FeedRecord'),
         hide: false,
       },
 
 
 
 
-      // 语音场景
-      {
-        title: Strings.getLang('voiceScene'),
-        icon: Res.iconSpeak,
-        onPress: () => jumpToPage('sceneList'),
-        hide: false,
-      },
-      // 场景管理
-      {
-        title: Strings.getLang('scenes'),
-        icon: Res.iconScenes,
-        onPress: () => jumpToPage('scene'),
-        hide: false,
-      },
-      // 设备管理
-      {
-        title: Strings.getLang('devices'),
-        icon: Res.iconSub,
-        onPress: () => jumpToPage('device'),
-        hide: false,
-      },
+      // // 语音场景
+      // {
+      //   title: Strings.getLang('voiceScene'),
+      //   icon: Res.iconSpeak,
+      //   onPress: () => jumpToPage('sceneList'),
+      //   hide: false,
+      // },
+      // // 场景管理
+      // {
+      //   title: Strings.getLang('scenes'),
+      //   icon: Res.iconScenes,
+      //   onPress: () => jumpToPage('scene'),
+      //   hide: false,
+      // },
+      // // 设备管理
+      // {
+      //   title: Strings.getLang('devices'),
+      //   icon: Res.iconSub,
+      //   onPress: () => jumpToPage('device'),
+      //   hide: false,
+      // },
     ],
     []
   );
 
   const otherServiceList: INavItem[] = useMemo(
     () => [
-      // 网关
-      {
-        title: Strings.getLang('gateway'),
-        icon: Res.iconGate,
-        onPress: () => toGatewayPanel(),
-      },
-      // 音乐入口
-      {
-        title: Strings.getLang('music'),
-        icon: Res.music,
-        onPress: () => toMusicPanel(),
-      },
-      // 更多功能（包括快捷指令提示和自定义唤醒词）
-      {
-        title: Strings.getLang('moreFunction'),
-        icon: Res.moreFunction,
-        onPress: () => jumpToPage('moreFunction'),
-      },
-      // 继电器开关，如果存在继电器开关的dp，则显示
-      {
-        title: Strings.getLang('switch'),
-        icon: Res.switch,
-        onPress: () => jumpToPage('switch'),
-        hide: !switchList.length,
-      },
+      // // 网关
+      // {
+      //   title: Strings.getLang('gateway'),
+      //   icon: Res.iconGate,
+      //   onPress: () => toGatewayPanel(),
+      // },
+      // // 音乐入口
+      // {
+      //   title: Strings.getLang('music'),
+      //   icon: Res.music,
+      //   onPress: () => toMusicPanel(),
+      // },
+      // // 更多功能（包括快捷指令提示和自定义唤醒词）
+      // {
+      //   title: Strings.getLang('moreFunction'),
+      //   icon: Res.moreFunction,
+      //   onPress: () => jumpToPage('moreFunction'),
+      // },
+      // // 继电器开关，如果存在继电器开关的dp，则显示
+      // {
+      //   title: Strings.getLang('switch'),
+      //   icon: Res.switch,
+      //   onPress: () => jumpToPage('switch'),
+      //   hide: !switchList.length,
+      // },
     ],
     [switchList]
   );
@@ -165,6 +165,31 @@ const Home: FC = () => {
     );
   };
 
+
+  // 喂食数量
+  let feedNum = 1;
+  const renderFeedRow = () => {
+    return (
+      <View>
+        <View style={styles.navContainer}>
+          {/* <TYText
+            text={title}
+            color="#000"
+            weight="bold"
+            size={cx(16)}
+            style={{ lineHeight: cx(22) }}
+          />
+          {subTitle && (
+            <TYText text={subTitle} color="#A2A3AA" size={cx(12)} style={{ lineHeight: cx(22) }} />
+          )} */}
+          <TYText>
+            {feedNum}
+          </TYText>
+        </View>
+      </View>
+    );
+  };
+
   const renderNavItem = (item: INavItem) => {
     const { title, icon, onPress } = item;
     return (
@@ -201,6 +226,7 @@ const Home: FC = () => {
       <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
         {!!functionalConfigList.length && renderFunctionalConfig()}
         {!!otherServiceList.length && renderOtherService()}
+        { renderFeedRow() }
       </ScrollView>
     </View>
   );
