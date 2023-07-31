@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useEffect } from 'react';
+import React, { FC, useMemo, useEffect, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -7,7 +7,8 @@ import {
   ImageSourcePropType,
   ScrollView,
 } from 'react-native';
-import { Utils, TYText, Button, TYSdk } from 'tuya-panel-kit';
+import { Utils, TYText, Button, TYSdk, ControllerBar } from 'tuya-panel-kit';
+import svgs from 'tuya-panel-kit/src/components/iconfont/svg/defaultSvg'; // eslint-disable-line
 import { useDispatch } from 'react-redux';
 import _ from 'lodash';
 import { jumpToPage } from '@utils';
@@ -124,13 +125,22 @@ const Home: FC = () => {
     TYSdk.mobile.uiIdNavEventEmitter.pushWithUiID('000001c9rm', {});
   };
 
+  // 暗门
+  const [clickNum, setClickNum] = useState(0);
+  const addClickNum = () => {
+    setClickNum(clickNum => clickNum + 1);
+    setTimeout(function () {
+      setClickNum(clickNum => 0);
+    }, 2000)
+    if (clickNum == 5) {
+      jumpToPage('sceneList');
+    }
+  };
   const renderTopContent = () => {
     return (
       <View style={styles.topContent}>
-        <TouchableOpacity activeOpacity={0.88} onPress={() => jumpToPage('voiceControlSkill')}>
+        <TouchableOpacity activeOpacity={1} onPress={() => addClickNum()}>
           <ImageBackground source={Res.card} style={styles.card}>
-            <TYText text={Strings.getLang('voiceDesc')} style={styles.cardSubtitle} />
-            <TYText text={Strings.getLang('voiceControl')} style={styles.cardTitle} />
           </ImageBackground>
         </TouchableOpacity>
       </View>
@@ -167,25 +177,36 @@ const Home: FC = () => {
 
 
   // 喂食数量
-  let feedNum = 1;
+  const [feedNum, setFeedNum] = useState(1);
+  const row = { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' };
+  const decreaseFeed = () => {
+    setFeedNum(prevNum => prevNum - 1);
+  };
+  const increaseFeed = () => {
+    setFeedNum(prevNum => prevNum + 1);
+  };
   const renderFeedRow = () => {
     return (
-      <View>
-        <View style={styles.navContainer}>
-          {/* <TYText
-            text={title}
-            color="#000"
-            weight="bold"
-            size={cx(16)}
-            style={{ lineHeight: cx(22) }}
-          />
-          {subTitle && (
-            <TYText text={subTitle} color="#A2A3AA" size={cx(12)} style={{ lineHeight: cx(22) }} />
-          )} */}
-          <TYText>
-            {feedNum}
-          </TYText>
-        </View>
+      <View style={row}>
+        <Button
+          icon="-"
+          iconSize={25}
+          onPress={() => {decreaseFeed()}}>
+        </Button>
+        <TYText>
+          {feedNum}
+        </TYText>
+        <Button
+          icon='+'
+          iconSize={25}
+          onPress={() => {increaseFeed()}}>
+        </Button>
+        <Button
+          icon='selectedUnBordered'
+          text='投喂'
+          size={20}
+          onPress={() => {}}>
+        </Button>
       </View>
     );
   };
@@ -225,7 +246,7 @@ const Home: FC = () => {
       {renderTopContent()}
       <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
         {!!functionalConfigList.length && renderFunctionalConfig()}
-        {!!otherServiceList.length && renderOtherService()}
+        {/* {!!otherServiceList.length && renderOtherService()} */}
         { renderFeedRow() }
       </ScrollView>
     </View>
